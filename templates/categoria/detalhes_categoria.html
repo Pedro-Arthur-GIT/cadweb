@@ -1,0 +1,48 @@
+{% extends 'base.html' %}
+
+{% block titulo %} Detalhes da Categoria {% endblock%}
+
+{% block titulo_conteudo %} Detalhes da Categoria {% endblock %}
+
+
+
+{% block conteudo %}
+
+{% block botao %}
+
+<button class = "btn btn-primary" style= "margin-bottom: 15px" onclick="window.history.back()">Voltar</button>
+
+{% endblock %}
+
+<table class="table table-bordered table-hover">
+
+    <thead class="thead-dark">
+        <tr>
+            <th scope="col">ID</th>
+            <th scope="col">Descrição</th>
+            <th scope="col"> Ordem</th>
+            <th scope="col">Ações</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for item in lista %}
+        <tr>
+            <td> {{item.id}}</td>
+            <td> {{item.nome}}</td>
+            <td> {{item.ordem}}</td>
+
+            <td>
+                {% comment %} <button onclick="location.href='{% url 'detalhes_categoria' item.id %}'" class= "btn btn-info">Detalhes</button> {% endcomment %}
+                <button onclick="location.href='{% url 'editar_categoria' item.id %}'" class= "btn btn-warning">Editar</button>
+                <button onclick="location.href='{% url 'excluir_categoria' item.id %}'" class= "btn btn-danger">Excluir</button>
+            </td>
+        </tr>
+        {% endfor %}
+      
+    </tbody>
+</table>
+
+
+
+{% endblock %}
+

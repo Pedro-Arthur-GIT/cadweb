@@ -1,0 +1,50 @@
+{% extends 'base.html' %}
+
+{% block titulo %} Excluir Categoria {% endblock%}
+
+{% block titulo_conteudo %} Excluir Categoria {% endblock %}
+
+
+
+{% block conteudo %}
+
+{% block botao %}
+
+<p style="text-align: center; font-size: 24px; font-weight: bold;">
+    Atenção!
+</p>
+
+<h4 style="text-align: center">Essa é uma ação irreversível. Tem certeza que deseja excluir esta categoria?</h4><br>
+
+{% comment %} <button class = "btn btn-primary" style= "margin-bottom: 15px" onclick="location.href='{% url '' %}'">Nova categoria</button> {% endcomment %}
+
+{% endblock %}
+
+<table class="table table-bordered table-hover">
+
+    <thead class="thead-dark">
+        <tr>
+            <th scope="col">ID</th>
+            <th scope="col">Descrição</th>
+            <th scope="col"> Ordem</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for item in lista %}
+        <tr>
+            <td> {{item.id}}</td>
+            <td> {{item.nome}}</td>
+            <td> {{item.ordem}}</td>
+        </tr>
+        {% endfor %}
+      
+    </tbody>
+</table>
+
+<button onclick="location.href='{% url 'categoria' %}'" class= "btn btn-secondary">Cancelar</button>
+<button onclick="location.href='{% url 'categoria' %}'" class= "btn btn-danger">Excluir</button>
+
+
+
+{% endblock %}
+
