@@ -20,7 +20,7 @@ def form_categoria(request):
        form = CategoriaForm(request.POST) # instancia o modelo com os dados do form
        if form.is_valid():# faz a validação do formulário
             form.save() # salva a instancia do modelo no banco de dados
-            return redirect('index') # redireciona para a listagem
+            return redirect('categoria') # redireciona para a listagem
     else:# método é get, novo registro
         form = CategoriaForm() # formulário vazio
     contexto = {
@@ -38,34 +38,17 @@ def editar_categoria(request, id):
             return redirect('categoria') # redireciona para a listagem
     else:
          form = CategoriaForm(instance=categoria)
-    return render(request, 'categoria/formulario.html', {'form': form,})
-
-# def editar_categoria(request, id):
-#     categoria = Categoria.objects.get(pk=id)
-#     if request.method == 'POST':
-#         # combina os dados do formulário submetido com a instância do objeto existente, permitindo editar seus valores.
-#         form = CategoriaForm(request.POST, instance=categoria)
-#         if form.is_valid():
-#             categoria = form.save() # save retorna o objeto salvo
-#             lista = []
-#             lista.append(categoria) 
-#             return render(request, 'categoria/lista.html', {'lista': lista})
-#     else:
-#          form = CategoriaForm(instance=categoria)
-#     return render(request, 'categoria/formulario.html', {'form': form,})
-
+    return render(request, 'categoria/editar_categoria.html', {'form': form,})
 
 def detalhes_categoria(request, id):
     categoria = Categoria.objects.get(pk=id)
-    lista = []
-    lista.append(categoria) 
-    return render(request, 'categoria/detalhes_categoria.html', {'lista': lista})
-
+    return render(request, 'categoria/detalhes_categoria.html', {'categoria': categoria})
 
 def excluir_categoria(request, id):
-    categoria = Categoria.objects.get(pk=id)
-    lista = []
-    lista.append(categoria) 
-    return render(request, 'categoria/excluir_categoria.html', {'lista': lista})
-
-
+    if request.method == 'POST':
+        categoria = Categoria.objects.get(id=id)
+        categoria.delete()
+        return redirect('categoria')
+    else:
+        categoria = Categoria.objects.get(pk=id)
+    return render(request, 'categoria/excluir_categoria.html', {'categoria': categoria})

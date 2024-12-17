@@ -14,9 +14,8 @@
     Atenção!
 </p>
 
-<h4 style="text-align: center">Essa é uma ação irreversível. Tem certeza que deseja excluir esta categoria?</h4><br>
+<p style="text-align: center; fontsize: 24px">Essa é uma ação irreversível. Tem certeza que deseja excluir esta categoria?</p><br>
 
-{% comment %} <button class = "btn btn-primary" style= "margin-bottom: 15px" onclick="location.href='{% url '' %}'">Nova categoria</button> {% endcomment %}
 
 {% endblock %}
 
@@ -30,19 +29,20 @@
         </tr>
     </thead>
     <tbody>
-        {% for item in lista %}
         <tr>
-            <td> {{item.id}}</td>
-            <td> {{item.nome}}</td>
-            <td> {{item.ordem}}</td>
+            <td> {{categoria.id}}</td>
+            <td> {{categoria.nome}}</td>
+            <td> {{categoria.ordem}}</td>
         </tr>
-        {% endfor %}
-      
     </tbody>
 </table>
 
-<button onclick="location.href='{% url 'categoria' %}'" class= "btn btn-secondary">Cancelar</button>
-<button onclick="location.href='{% url 'categoria' %}'" class= "btn btn-danger">Excluir</button>
+<button onclick="window.history.back()" class= "btn btn-secondary">Cancelar</button>
+
+<form action="{% url 'excluir_categoria' categoria.id %}" method="POST" style="display:inline;">
+    {% csrf_token %}
+    <button type="submit" class= "btn btn-danger">Excluir</button>
+</form>
 
 
 

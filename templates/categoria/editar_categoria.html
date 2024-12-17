@@ -2,10 +2,26 @@
 
 {% block titulo %} Editar Categoria {% endblock %}
 
-{% block titulo_page %} Editar Categoria {% endblock %}
+{% block titulo_conteudo %} Editar Categoria {% endblock %}
 
-{% block conteudo %}
+{% block conteudo %} 
 
-   <h1>  ID {{id}}. </h1>
-    
+<form method="post" >
+    {% csrf_token %}
+    <input type="hidden">
+    <p>
+        <label for="id_nome">Nome:</label>
+        <input type="text" name="nome" class="form-control" placeholder="Insira o novo nome" maxlength="100" required id="id_nome">
+    </p>
+
+    <p>
+        <label for="id_ordem">Ordem:</label>
+        <input type="number" name="ordem" class="inteiro form-control" placeholder="Insira a nova ordem" required id="id_ordem">
+    </p>
+
+    <!-- Renderiza cada campo do formulário com <p> tags -->
+    <button onclick="window.history.back()" class= "btn btn-secondary">Cancelar</button>
+    <button class="btn btn-primary" type="submit">Enviar</button>
+</form>
+
 {% endblock %}
