@@ -38,7 +38,7 @@ def editar_categoria(request, id):
             return redirect('categoria') # redireciona para a listagem
     else:
          form = CategoriaForm(instance=categoria)
-    return render(request, 'categoria/editar_categoria.html', {'form': form,})
+    return render(request, 'categoria/editar_categoria.html', {'form': form, 'categoria': categoria})
 
 def detalhes_categoria(request, id):
     categoria = Categoria.objects.get(pk=id)
