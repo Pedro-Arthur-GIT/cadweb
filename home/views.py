@@ -14,6 +14,12 @@ def categoria(request):
     }
     return render(request, 'categoria/lista.html', contexto)
 
+def tabela_categoria(request):
+    contexto = {
+       'lista': Categoria.objects.all().order_by('id'),
+    }
+    return render(request, 'categoria/tabela.html', contexto)
+
 
 def form_categoria(request):
     if request.method == 'POST':

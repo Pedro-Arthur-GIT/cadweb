@@ -11,10 +11,11 @@
 {% block botao %}
 
 <button class = "btn btn-primary" style= "margin-bottom: 15px" onclick="location.href='{% url 'form_categoria' %}'">Nova categoria</button>
+<button class = "btn btn-primary" style= "margin-bottom: 15px" onclick="recarregarTabela()">Recarregar</button>
 
 {% endblock %}
 
-<table class="table table-bordered table-hover">
+<table class="table table-bordered table-hover" >
 
     <thead class="thead-dark">
         <tr>
@@ -24,25 +25,35 @@
             <th scope="col">Ações</th>
         </tr>
     </thead>
-    <tbody>
-        {% for item in lista %}
-        <tr>
-            <td> {{item.id}}</td>
-            <td> {{item.nome}}</td>
-            <td> {{item.ordem}}</td>
 
-            <td>
-                <button onclick="location.href='{% url 'detalhes_categoria' item.id %}'" class= "btn btn-info">Detalhes</button>
-                <button onclick="location.href='{% url 'editar_categoria' item.id %}'" class= "btn btn-warning">Editar</button>
-                <button onclick="location.href='{% url 'excluir_categoria' item.id %}'" class= "btn btn-danger">Excluir</button>
-            </td>
-        </tr>
-        {% endfor %}
+    <tbody id="tbody-categoria">
+        
+        {% include 'categoria/tabela.html' %}
       
     </tbody>
+
 </table>
 
+<script>
+    function recarregarTabela() {
+        const tabela = document.getElementById('tbody-categoria');
+        
+        // Faz a tabela desaparecer
+        tabela.style.opacity = 0.5;
 
+        // Atualiza a tabela após 300ms
+        setTimeout(function() {
+            fetch('{% url "tabela_categoria" %}')
+                .then(response => response.text())  // Recebe o HTML da resposta
+                .then(html => {
+                    tabela.innerHTML = html;  // Atualiza o conteúdo da tabela
+                    tabela.style.opacity = 1;  // Faz a tabela aparecer novamente
+                })
+                .catch(error => console.error('Erro ao carregar a tabela:', error));
+        }, 300);  // Espera 300ms para fazer a tabela "sumir"
+    }
+</script>
 
 {% endblock %}
+
 
