@@ -1,0 +1,59 @@
+{% extends 'base.html' %}
+
+{% block titulo %} Lista de Categorias {% endblock%}
+
+{% block titulo_conteudo %} Lista de Categorias {% endblock %}
+
+
+
+{% block conteudo %}
+
+{% block botao %}
+
+<button class = "btn btn-primary" style= "margin-bottom: 15px" onclick="location.href='{% url 'form_categoria' %}'">Nova categoria</button>
+<button class = "btn btn-primary" style= "margin-bottom: 15px" onclick="recarregarTabela()">Recarregar</button>
+
+{% endblock %}
+
+<table class="table table-bordered table-hover" >
+
+    <thead class="thead-dark">
+        <tr>
+            <th scope="col">ID</th>
+            <th scope="col">Descrição</th>
+            <th scope="col"> Ordem</th>
+            <th scope="col">Ações</th>
+        </tr>
+    </thead>
+
+    <tbody id="tbody-categoria">
+        
+        {% include 'categoria/tabela.html' %}
+      
+    </tbody>
+
+</table>
+
+<script>
+    function recarregarTabela() {
+        const tabela = document.getElementById('tbody-categoria');
+        
+        // Faz a tabela desaparecer
+        tabela.style.opacity = 0.5;
+
+        // Atualiza a tabela após 300ms
+        setTimeout(function() {
+            fetch('{% url "tabela_categoria" %}')
+                .then(response => response.text())  // Recebe o HTML da resposta
+                .then(html => {
+                    tabela.innerHTML = html;  // Atualiza o conteúdo da tabela
+                    tabela.style.opacity = 1;  // Faz a tabela aparecer novamente
+                })
+                .catch(error => console.error('Erro ao carregar a tabela:', error));
+        }, 300);  // Espera 300ms para fazer a tabela "sumir"
+    }
+</script>
+
+{% endblock %}
+
+
