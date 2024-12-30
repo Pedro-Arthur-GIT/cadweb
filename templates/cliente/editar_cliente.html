@@ -1,8 +1,8 @@
 {% extends 'base.html' %}
 
-{% block titulo %} Editar Categoria {% endblock %}
+{% block titulo %} Editar Cliente {% endblock %}
 
-{% block titulo_conteudo %} Editar Categoria {% endblock %}
+{% block titulo_conteudo %} Editar Cliente {% endblock %}
 
 {% block conteudo %} 
 
@@ -11,16 +11,22 @@
     <input type="hidden">
     <p>
         <label for="id_nome">Nome:</label>
-        <input type="text" name="nome" class="form-control" placeholder="{{categoria.nome}}" maxlength="100" required id="id_nome">
+        <input type="text" name="nome" class="form-control" placeholder="{{cliente.nome}}" maxlength="100" required id="id_nome">
     </p>
 
     <p>
-        <label for="id_ordem">Ordem:</label>
-        <input type="number" name="ordem" class="inteiro form-control" placeholder="{{categoria.ordem}}" required id="id_ordem">
+        <label for="id_cpf">CPF:</label>
+        <input type="text" name="cpf" class="cpf form-control" placeholder="{{cliente.cpf}}" required id="id_cpf">
     </p>
 
+    <p>
+        <label for="id_datanasc">Data de nascimento:</label>
+        <input type="text" name="datanasc" class="data form-control" placeholder="{{cliente.datanasc}}" required id="id_datanasc">
+    </p>
+
+
     <!-- Renderiza cada campo do formulário com <p> tags -->
-    <button onclick="location.href= '{% url 'categoria' %}'" class= "btn btn-secondary">Cancelar</button>
+    <button onclick="location.href= '{% url 'cliente' %}'" class= "btn btn-secondary">Cancelar</button>
     <button class="btn btn-primary" type="submit">Enviar</button>
 </form>
 

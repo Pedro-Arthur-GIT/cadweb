@@ -1,8 +1,8 @@
 {% extends 'base.html' %}
 
-{% block titulo %} Detalhes da Categoria {% endblock%}
+{% block titulo %} Detalhes do Cliente {% endblock%}
 
-{% block titulo_conteudo %} Detalhes da Categoria {% endblock %}
+{% block titulo_conteudo %} Detalhes do Cliente {% endblock %}
 
 
 
@@ -11,22 +11,27 @@
 
 <p>
     <label>ID:</label>
-    <span class="form-control">{{categoria.id}}<span>
+    <span class="form-control">{{cliente.id}}<span>
 </p>
 
 <p>
     <label>Nome:</label>
-    <span class="form-control">{{categoria.nome}}<span>
+    <span class="form-control">{{cliente.nome}}<span>
 </p>
 
 <p>
-    <label>Ordem:</label>
-    <span class="form-control">{{categoria.ordem}}<span>
+    <label>CPF:</label>
+    <span class="cpf form-control">{{cliente.cpf}}<span>
 </p>
 
-<button onclick="location.href= '{% url 'categoria' %}'" class= "btn btn-secondary">Cancelar</button>
-<button onclick="location.href='{% url 'editar_categoria' categoria.id %}'" class= "btn btn-warning">Editar</button>
-<button onclick="location.href='{% url 'excluir_categoria' categoria.id %}'" class= "btn btn-danger">Excluir</button>
+<p>
+    <label>Data de nascimento:</label>
+    <span class="data form-control">{{cliente.datanasc}}<span>
+</p>
+
+<button onclick="location.href= '{% url 'cliente' %}'" class= "btn btn-secondary">Cancelar</button>
+<button onclick="location.href='{% url 'editar_cliente' cliente.id %}'" class= "btn btn-warning">Editar</button>
+<button onclick="location.href='{% url 'excluir_cliente' cliente.id %}'" class= "btn btn-danger">Excluir</button>
 
 {% endblock %}
 

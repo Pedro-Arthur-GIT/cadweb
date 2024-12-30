@@ -37,7 +37,7 @@
     </tbody>
 </table>
 
-<button onclick="location.href= '{% url 'categoria' %}'" class= "btn btn-secondary">Cancelar</button>
+<button onclick="location.href= '{% url 'cliente' %}'" class= "btn btn-secondary">Cancelar</button>
 
 <form action="{% url 'excluir_categoria' categoria.id %}" method="POST" style="display:inline;">
     {% csrf_token %}

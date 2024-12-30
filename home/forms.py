@@ -36,11 +36,15 @@ class CategoriaForm(forms.ModelForm):
          if len(valor)< 3:
               raise forms.ValidationError("O nome deve ter pelo menos 3 caracteres.")
          
+class ClienteForm(forms.ModelForm):
+    class Meta:
+        model = Cliente
+        fields = ['nome', 'cpf', 'datanasc']
+        widgets = {
+            'nome':forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Nome'}),
+            'cpf':forms.TextInput(attrs={'class': 'cpf form-control', 'placeholder': 'CPF', 'id': 'id_cpf'}),
+            'datanasc': forms.DateInput(attrs={'class': 'data form-control', 'placeholder': 'Data de Nascimento'}, format='%d/%m/%Y'),
+        }
 
 
     
-
-
-
-
-
