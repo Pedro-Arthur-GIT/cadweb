@@ -1,5 +1,6 @@
 from django import forms
 from .models import *
+from datetime import date
 
 
 
@@ -32,7 +33,7 @@ class CategoriaForm(forms.ModelForm):
          if senha != confirmar_senha:
               raise forms.ValidationError("As senhas não correspondem")
          
-    def validar_nome(valor):
+    def validar_nome(self, valor):
          if len(valor)< 3:
               raise forms.ValidationError("O nome deve ter pelo menos 3 caracteres.")
          
@@ -45,6 +46,13 @@ class ClienteForm(forms.ModelForm):
             'cpf':forms.TextInput(attrs={'class': 'cpf form-control', 'placeholder': 'CPF', 'id': 'id_cpf'}),
             'datanasc': forms.DateInput(attrs={'class': 'data form-control', 'placeholder': 'Data de Nascimento'}, format='%d/%m/%Y'),
         }
+
+    def clean_datanasc(self):
+        datanasc = self.cleaned_data.get('datanasc')
+        if datanasc > date.today():
+            raise forms.ValidationError("A data de nascimento não pode ser maior que a data atual.")
+        return datanasc
+    
 
 
     

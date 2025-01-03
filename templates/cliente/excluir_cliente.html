@@ -24,22 +24,24 @@
     <thead class="thead-dark">
         <tr>
             <th scope="col">ID</th>
-            <th scope="col">Descrição</th>
-            <th scope="col"> Ordem</th>
+            <th scope="col">Nome</th>
+            <th scope="col"> CPF</th>
+            <th scope="col"> Data de nasc.</th>
         </tr>
     </thead>
     <tbody>
         <tr>
-            <td> {{categoria.id}}</td>
-            <td> {{categoria.nome}}</td>
-            <td> {{categoria.ordem}}</td>
+            <td> {{cliente.id}}</td>
+            <td> {{cliente.nome}}</td>
+            <td> {{cliente.cpf}}</td>
+            <td> {{cliente.datanasc}}</td>
         </tr>
     </tbody>
 </table>
 
 <button onclick="location.href= '{% url 'cliente' %}'" class= "btn btn-secondary">Cancelar</button>
 
-<form action="{% url 'excluir_categoria' categoria.id %}" method="POST" style="display:inline;">
+<form action="{% url 'excluir_cliente' cliente.id %}" method="POST" style="display:inline;">
     {% csrf_token %}
     <button type="submit" class= "btn btn-danger">Excluir</button>
 </form> 

@@ -3,7 +3,7 @@
             <td> {{item.id}}</td>
             <td> {{item.nome}}</td>
             <td> {{item.cpf}}</td>
-            <td> {{item.datanasc}}</td>
+            <td> {{item.datanasc|date:"d/m/Y"}}</td>
     
             <td>
                 <button onclick="location.href='{% url 'detalhes_cliente' item.id %}'" class= "btn btn-info">Detalhes</button>
