@@ -29,9 +29,9 @@
     <span class="data form-control">{{cliente.datanasc}}<span>
 </p>
 
-<button onclick="location.href= '{% url 'cliente' %}'" class= "btn btn-secondary">Cancelar</button>
-<button onclick="location.href='{% url 'editar_cliente' cliente.id %}'" class= "btn btn-warning">Editar</button>
-<button onclick="location.href='{% url 'excluir_cliente' cliente.id %}'" class= "btn btn-danger">Excluir</button>
+<button onclick="location.href= '{% url 'cliente' %}'" class= "btn btn-secondary btn-sm">Cancelar</button>
+<button onclick="location.href='{% url 'editar_cliente' cliente.id %}'" class= "btn btn-warning btn-sm">Editar</button>
+<button onclick="location.href='{% url 'excluir_cliente' cliente.id %}'" class= "btn btn-danger btn-sm">Excluir</button>
 
 {% endblock %}
 

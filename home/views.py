@@ -15,13 +15,6 @@ def categoria(request):
     }
     return render(request, 'categoria/lista.html', contexto)
 
-def tabela_categoria(request):
-    contexto = {
-       'lista': Categoria.objects.all().order_by('id'),
-    }
-    return render(request, 'categoria/tabela.html', contexto)
-
-
 def form_categoria(request):
     if request.method == 'POST':
        form = CategoriaForm(request.POST) # instancia o modelo com os dados do form
@@ -35,9 +28,6 @@ def form_categoria(request):
         'form':form,
     }
     return render(request, 'categoria/formulario.html', contexto)
-
-
-
 
 def editar_categoria(request, id):
     try:
@@ -70,19 +60,16 @@ def detalhes_categoria(request, id):
 
 def excluir_categoria(request, id):
     try:
-        categoria = Categoria.objects.get(pk=id)
-    except Categoria.DoesNotExist:
-          # Caso o registro não seja encontrado, exibe a mensagem de erro
-        messages.error(request, 'Registro não encontrado')
-        return redirect('categoria')  # Redireciona para a listagem
-    if request.method == 'POST':
-        categoria = Categoria.objects.get(id=id)
-        categoria.delete()
+        categoria = Categoria.objects.get(pk=id) 
+        produto.delete()
         messages.success(request, "Operação realizada com sucesso")
         return redirect('categoria')
-    else:
-        categoria = Categoria.objects.get(pk=id)
-    return render(request, 'categoria/excluir_categoria.html', {'categoria': categoria})
+    except Categoria.DoesNotExist:
+        # Caso o registro não seja encontrado, exibe a mensagem de erro
+        messages.error(request, 'Registro não encontrado')
+    return redirect('categoria')  # Redireciona para a listagem
+
+
 
 def cliente(request):
     contexto = {
@@ -90,11 +77,6 @@ def cliente(request):
     }
     return render(request, 'cliente/lista_cliente.html', contexto)
 
-def tabela_cliente(request):
-    contexto = {
-        'lista': Cliente.objects.all().order_by('id'),
-    }
-    return render(request, 'cliente/tabela_cliente.html', contexto)
 
 def formulario_cliente(request):
     if request.method == 'POST':
@@ -141,16 +123,78 @@ def detalhes_cliente(request, id):
 
 def excluir_cliente(request, id):
     try:
-        cliente = Cliente.objects.get(pk=id)
+        cliente = Cliente.objects.get(pk=id) 
+        produto.delete()
+        messages.success(request, "Operação realizada com sucesso")
+        return redirect('cliente')
     except Cliente.DoesNotExist:
         # Caso o registro não seja encontrado, exibe a mensagem de erro
         messages.error(request, 'Registro não encontrado')
-        return redirect('cliente')  # Redireciona para a listagem
+    return redirect('cliente')  # Redireciona para a listagem
+
+
+
+
+
+def produto(request):
+    contexto = {
+        'lista': Produto.objects.all().order_by('id'),
+    }
+    return render(request, 'produto/lista_produto.html', contexto)
+
+def form_produto(request):
     if request.method == 'POST':
-        cliente = Cliente.objects.get(id=id)
-        cliente.delete()
-        messages.success(request, "Operação realizada com sucesso")
-        return redirect('cliente')
+        form = ProdutoForm(request.POST)  # instancia o modelo com os dados do form
+        if form.is_valid():  # faz a validação do formulário
+            form.save()  # salva a instância do modelo no banco de dados
+            messages.success(request, "Operação realizada com sucesso")
+            return redirect('produto')  # redireciona para a listagem
+    else:  # método é get, novo registro
+        form = ProdutoForm()  # formulário vazio
+    contexto = {
+        'form': form,
+    }
+    return render(request, 'produto/form_produto.html', contexto)
+
+def editar_produto(request, id):
+    try:
+        produto = Produto.objects.get(pk=id)
+    except Cliente.DoesNotExist:
+        # Caso o registro não seja encontrado, exibe a mensagem de erro
+        messages.error(request, 'Registro não encontrado')
+        return redirect('produto')  # Redireciona para a listagem
+
+    if request.method == 'POST':
+        # combina os dados do formulário submetido com a instância do objeto existente, permitindo editar seus valores.
+        form = ProdutoForm(request.POST, instance=cliente)
+        if form.is_valid():
+            produto = form.save()  # save retorna o objeto salvo
+            messages.success(request, "Operação realizada com sucesso")
+            return redirect('produto')  # redireciona para a listagem
+
     else:
-        cliente = Cliente.objects.get(pk=id)
-    return render(request, 'cliente/excluir_cliente.html', {'cliente': cliente})
+        form = ProdutoForm(instance=produto)
+    return render(request, 'produto/editar_produto.html', {'form': form, 'produto': produto})
+
+def detalhes_produto(request, id):
+    try:
+        produto = Produto.objects.get(pk=id)
+    except Cliente.DoesNotExist:
+        # Caso o registro não seja encontrado, exibe a mensagem de erro
+        messages.error(request, 'Registro não encontrado')
+        return redirect('produto')  # Redireciona para a listagem
+    return render(request, 'produto/detalhes_produto.html', {'produto': produto})
+
+
+def remover_produto(request, id):
+    try:
+        produto = Produto.objects.get(pk=id) 
+        produto.delete()
+        messages.success(request, "Operação realizada com sucesso")
+        return redirect('produto')
+    except Produto.DoesNotExist:
+        # Caso o registro não seja encontrado, exibe a mensagem de erro
+        messages.error(request, 'Registro não encontrado')
+    return redirect('produto')  # Redireciona para a listagem
+   
+    

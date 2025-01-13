@@ -10,8 +10,8 @@
 
 {% block botao %}
 
-<button class = "btn btn-primary" style= "margin-bottom: 15px" onclick="location.href='{% url 'formulario_cliente' %}'">Novo Cliente</button>
-<button class = "btn btn-primary" style= "margin-bottom: 15px" onclick="recarregarTabela()">Recarregar</button>
+<button class = "btn btn-primary btn-sm" style= "margin-bottom: 15px" onclick="location.href='{% url 'formulario_cliente' %}'">Novo Cliente</button>
+<button onClick="location='{% url "cliente" %}'" type="button" class="btn btn-primary btn-sm"  style= "margin-bottom: 15px">Recarregar</button>
 
 {% endblock %}
 
@@ -27,32 +27,25 @@
     </thead>
 
     <tbody id="tbody-cliente">
+        <tr>
+            {% for cliente in lista %}
+                <td> {{cliente.id}}</td>
+                <td> {{cliente.nome}}</td>
+                <td> {{cliente.cpf}}</td>
+                <td> {{cliente.datanasc|date:"d/m/Y"}}</td>
         
-        {% include 'cliente/tabela_cliente.html' %}
-      
+                <td>
+                    <button onclick="location.href='{% url 'detalhes_cliente' cliente.id %}'" class= "btn btn-info btn-sm">Detalhes</button>
+                    <a href="{% url 'editar_cliente' cliente.id %}" class="btn btn-warning btn-sm">Editar</a>
+                    <a href="{% url 'excluir_cliente' cliente.id %}" class="btn btn-danger btn-sm" 
+            onclick="return confirm('Tem certeza que deseja remover este registro?');">Excluir</a>
+                   
+                </td>
+            </tr>
+        {% endfor %}
     </tbody>
 
 </table>
-
-<script>
-    function recarregarTabela() {
-        const tabela = document.getElementById('tbody-cliente');
-        
-        // Faz a tabela desaparecer
-        tabela.style.opacity = 0.5;
-
-        // Atualiza a tabela após 300ms
-        setTimeout(function() {
-            fetch('{% url "tabela_cliente" %}')
-                .then(response => response.text())  // Recebe o HTML da resposta
-                .then(html => {
-                    tabela.innerHTML = html;  // Atualiza o conteúdo da tabela
-                    tabela.style.opacity = 1;  // Faz a tabela aparecer novamente
-                })
-                .catch(error => console.error('Erro ao carregar a tabela:', error));
-        }, 300);  // Espera 300ms para fazer a tabela "sumir"
-    }
-</script>
 
 {% endblock %}
 
