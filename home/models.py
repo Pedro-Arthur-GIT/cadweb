@@ -26,7 +26,7 @@ class Cliente(models.Model):
             return self.datanasc.strftime('%d/%m/%Y')
         return None
 
-class Produto (models.Model):
+class Produto(models.Model):
     nome = models.CharField(max_length=100)
     preco = models.DecimalField(max_digits=10, decimal_places=2, blank=False)
     categoria = models.ForeignKey(Categoria, on_delete=models.CASCADE)
@@ -37,22 +37,14 @@ class Produto (models.Model):
     
     @property
     def estoque(self):
-        # Tenta buscar p estoque, se não existir, cria um novo com quantidade 0
-        estoque_itm, flag_created = Estoque.objects.ge_or_create(produto=self, defaults={'qtde': 0})
-
+        # Tenta buscar o estoque, se não existir, cria um novo com quantidade 0
+        estoque_item, flag_created = Estoque.objects.get_or_create(produto=self, defaults={'qtde': 0})
+        return estoque_item
 
 class Estoque(models.Model):
     produto = models.ForeignKey(Produto, on_delete=models.CASCADE)
     qtde = models.IntegerField()
 
     def __str__(self):
-        return f'{self.produto.nome} - Quantidade: {self.qtde}'
+         return f'{self.produto.nome} - Quantidade: {self.qtde}'
     
-class EstoqueForm(forms.ModelForm):
-    class Meta:
-        model = Estoquefields = ['produto', 'qtde']
-
-        widgets = {
-            'produto': forms.HiddenInput(), # Campo oculto para armazenar o ID do produto
-            'qtde':forms.TextInput(attrs={'class': 'inteiro form-control',}),
-        } 

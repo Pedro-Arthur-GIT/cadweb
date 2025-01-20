@@ -12,6 +12,7 @@
 <form method="post">
     {% csrf_token %}    
     {{ form.as_p }}
+    <button class= "btn btn-secondary btn-sm" onclick="location.href= '{% url 'produto' %}'">Cancelar</button>
     <button class="btn btn-primary btn-sm" type="submit">Salvar</button>
 </form>
 {% endblock conteudo %}
