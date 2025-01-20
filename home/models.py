@@ -34,3 +34,25 @@ class Produto (models.Model):
 
     def __str__(self):
         return self.nome
+    
+    @property
+    def estoque(self):
+        # Tenta buscar p estoque, se não existir, cria um novo com quantidade 0
+        estoque_itm, flag_created = Estoque.objects.ge_or_create(produto=self, defaults={'qtde': 0})
+
+
+class Estoque(models.Model):
+    produto = models.ForeignKey(Produto, on_delete=models.CASCADE)
+    qtde = models.IntegerField()
+
+    def __str__(self):
+        return f'{self.produto.nome} - Quantidade: {self.qtde}'
+    
+class EstoqueForm(forms.ModelForm):
+    class Meta:
+        model = Estoquefields = ['produto', 'qtde']
+
+        widgets = {
+            'produto': forms.HiddenInput(), # Campo oculto para armazenar o ID do produto
+            'qtde':forms.TextInput(attrs={'class': 'inteiro form-control',}),
+        } 

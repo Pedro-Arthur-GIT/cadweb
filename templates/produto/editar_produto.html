@@ -11,22 +11,42 @@
     <input type="hidden">
     <p>
         <label for="id_nome">Nome:</label>
-        <input type="text" name="nome" class="form-control" placeholder="{{cliente.nome}}" maxlength="100" required id="id_nome">
+        <input type="text" name="nome" class="form-control" placeholder="{{produto.nome}}" maxlength="100" required id="id_nome">
     </p>
 
     <p>
-        <label for="id_cpf">CPF:</label>
-        <input type="text" name="cpf" class="cpf form-control" placeholder="{{cliente.cpf}}" required id="id_cpf">
+        <label for="id_preco">Preço:</label>
+        <input type="text" name="preco" class="preco form-control" placeholder="{{produto.preco}}" required id="id_preco">
     </p>
 
     <p>
-        <label for="id_datanasc">Data de nascimento:</label>
-        <input type="text" name="datanasc" class="data form-control" placeholder="{{cliente.datanasc}}" required id="id_datanasc">
+        <label for="id_categoria">Categoria:</label>
+        <input type="text" name="categoria" class="data form-control" placeholder="{{produto.categoria}}" required id="id_categoria">
     </p>
 
+    <fieldset class="fieldset">
+        <label for="imagem">Imagem:</label>
+        <input type="hidden" 
+            id="img_base64"  
+            class="img_init" 
+            data-canvas="imageCanvas" 
+            value="{{form.instance.img_base64}}" 
+            name="img_base64">
+
+        <input type="file" id="imagem" 
+            name="imagem" 
+            data-hidden="img_base64" 
+            class="img_upload form-control" 
+            accept="image/*"><br>
+
+        <canvas class="canvas" id="imageCanvas" width="200" height="200"></canvas><br>
+
+    </fieldset>
+
+    
 
     <!-- Renderiza cada campo do formulário com <p> tags -->
-    <button onclick="location.href= '{% url 'cliente' %}'" class= "btn btn-secondary btn-sm">Cancelar</button>
+    <button onclick="location.href= '{% url 'produto' %}'" class= "btn btn-secondary btn-sm">Cancelar</button>
     <button class="btn btn-primary btn-sm" type="submit">Enviar</button>
 </form>
 

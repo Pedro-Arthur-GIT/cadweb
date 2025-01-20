@@ -27,14 +27,14 @@
 
     <tbody id="tbody-categoria">
         {% for categoria in lista %}
-            <tr>
+            <tr style="vertical-align: middle">
                 <td> {{categoria.id}}</td>
                 <td> {{categoria.nome}}</td>
                 <td> {{categoria.ordem}}</td>
         
                 <td>
                     <button onclick="location.href='{% url 'detalhes_categoria' categoria.id %}'" class= "btn btn-info btn-sm">Detalhes</button>
-                    <a href="{% url 'editar_categoria' categoria.id %}" class="btn btn-warning btn-sm">Editar</a>
+                    <a  href="{% url 'editar_categoria' categoria.id %}" class="btn btn-warning btn-sm" style="margin: 5px 0px 5px 0px" >Editar</a>
                     <a href="{% url 'excluir_categoria' categoria.id %}" class="btn btn-danger btn-sm"
             onclick="return confirm('Tem certeza que deseja remover este registro?');">Excluir</a>
                     {% comment %} <button onclick="location.href='{% url 'excluir_categoria' item.id %}'" class= "btn btn-danger">Excluir</button> {% endcomment %}

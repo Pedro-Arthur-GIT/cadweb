@@ -29,6 +29,14 @@
     <span class="preco form-control">{{produto.preco}}<span>
 </p>
 
+<p>
+    <label >Imagem:</label><br>
+    <span class="form-control"> 
+       <img  src="{{produto.img_base64}} " margin= auto width="200" height="200">
+     </span>
+ </p>
+ 
+
 <button onclick="location.href= '{% url 'produto' %}'" class= "btn btn-secondary btn-sm">Cancelar</button>
 <button onclick="location.href='{% url 'editar_produto' produto.id %}'" class= "btn btn-warning btn-sm">Editar</button>
 <a href="{% url 'remover_produto' produto.id %}" class="btn btn-danger btn-sm" onclick="return confirm('Tem certeza que deseja remover este registro?');">Excluir</a>

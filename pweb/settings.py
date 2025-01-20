@@ -141,5 +141,3 @@ STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-# Formato de exibição de data: DD/MM/YYYY
-DATE_FORMAT = 'd/m/Y'

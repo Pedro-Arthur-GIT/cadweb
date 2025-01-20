@@ -166,7 +166,7 @@ def editar_produto(request, id):
 
     if request.method == 'POST':
         # combina os dados do formulário submetido com a instância do objeto existente, permitindo editar seus valores.
-        form = ProdutoForm(request.POST, instance=cliente)
+        form = ProdutoForm(request.POST, instance=produto)
         if form.is_valid():
             produto = form.save()  # save retorna o objeto salvo
             messages.success(request, "Operação realizada com sucesso")

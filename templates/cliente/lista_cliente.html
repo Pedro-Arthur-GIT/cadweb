@@ -27,16 +27,17 @@
     </thead>
 
     <tbody id="tbody-cliente">
-        <tr>
-            {% for cliente in lista %}
+        {% for cliente in lista %}
+            <tr style="vertical-align: middle">
+            
                 <td> {{cliente.id}}</td>
                 <td> {{cliente.nome}}</td>
                 <td> {{cliente.cpf}}</td>
-                <td> {{cliente.datanasc|date:"d/m/Y"}}</td>
+                <td> {{cliente.datanascimento}}</td>
         
                 <td>
                     <button onclick="location.href='{% url 'detalhes_cliente' cliente.id %}'" class= "btn btn-info btn-sm">Detalhes</button>
-                    <a href="{% url 'editar_cliente' cliente.id %}" class="btn btn-warning btn-sm">Editar</a>
+                    <a href="{% url 'editar_cliente' cliente.id %}" style="margin: 5px 0px 5px 0px" class="btn btn-warning btn-sm">Editar</a>
                     <a href="{% url 'excluir_cliente' cliente.id %}" class="btn btn-danger btn-sm" 
             onclick="return confirm('Tem certeza que deseja remover este registro?');">Excluir</a>
                    
