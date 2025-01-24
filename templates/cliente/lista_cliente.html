@@ -10,8 +10,8 @@
 
 {% block botao %}
 
-<button class = "btn btn-primary btn-sm" style= "margin-bottom: 15px" onclick="location.href='{% url 'formulario_cliente' %}'">Novo Cliente</button>
-<button onClick="location='{% url "cliente" %}'" type="button" class="btn btn-primary btn-sm"  style= "margin-bottom: 15px">Recarregar</button>
+<button onClick="location.href ='{% url 'formulario_cliente' %}'" class = "btn btn-primary btn-sm" style= "margin-bottom: 15px" >Novo Cliente</button>
+<button onClick="location.href ='{% url 'cliente' %}'" type="button" class="btn btn-primary btn-sm"  style= "margin-bottom: 15px">Recarregar</button>
 
 {% endblock %}
 
@@ -23,7 +23,9 @@
             <th scope="col">Nome</th>
             <th scope="col">CPF</th>
             <th scope="col">Data de nascimento</th>
+            <th scope="col">Ações</th>
         </tr>
+        
     </thead>
 
     <tbody id="tbody-cliente">
@@ -36,9 +38,10 @@
                 <td> {{cliente.datanascimento}}</td>
         
                 <td>
-                    <button onclick="location.href='{% url 'detalhes_cliente' cliente.id %}'" class= "btn btn-info btn-sm">Detalhes</button>
-                    <a href="{% url 'editar_cliente' cliente.id %}" style="margin: 5px 0px 5px 0px" class="btn btn-warning btn-sm">Editar</a>
-                    <a href="{% url 'excluir_cliente' cliente.id %}" class="btn btn-danger btn-sm" 
+                    <button onClick= "location.href = '{% url 'novo_pedido' cliente.id %}'" style="margin: 0px 0px 5px 0px" type="button" class="btn btn-primary btn-sm">Novo Pedido</button>
+                    <button onClick= "location.href = '{% url 'detalhes_cliente' cliente.id %}'" style="margin: 0px 0px 5px 0px" class= "btn btn-info btn-sm">Detalhes</button>
+                    <a href="{% url 'editar_cliente' cliente.id %}" style="margin: 0px 0px 5px 0px" class="btn btn-warning btn-sm">Editar</a>
+                    <a href="{% url 'excluir_cliente' cliente.id %}" style="margin: 0px 0px 5px 0px" class="btn btn-danger btn-sm" 
             onclick="return confirm('Tem certeza que deseja remover este registro?');">Excluir</a>
                    
                 </td>

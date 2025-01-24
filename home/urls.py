@@ -28,4 +28,9 @@ urlpatterns = [
     path('teste3/', views.teste3, name='teste3'),
 
     path('buscar_dados/<str:app_modelo>/', views.buscar_dados, name='buscar_dados'),
+
+    path('pedido/lista/', views.pedido, name='pedido'),
+    path('pedido/novo_pedido/<int:id>/', views.novo_pedido, name='novo_pedido'),
+    path('pedido/remover_pedido/<int:id>/', views.remover_pedido, name='remover_pedido'),
+    path('pedido/detalhes_pedido/<int:id>/', views.detalhes_pedido, name='detalhes_pedido'),
 ]

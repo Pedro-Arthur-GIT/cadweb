@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+
+{% block titulo %} Detalhes do Pedido {% endblock%}
+
+{% block titulo_conteudo %} Detalhes do Pedido {% endblock %}
+
+
+
+{% block conteudo %}
+
+
+<p>
+    <label>ID:</label>
+    <span class="form-control">{{pedido.id}}<span>
+</p>
+
+<p>
+    <label>Nome:</label>
+    <span class="form-control">{{cliente.nome}}<span>
+</p>
+
+<p>
+    <label>Categoria:</label>
+    <span class="categoria form-control">{{produto.categoria}}<span>
+</p>
+
+<p>
+    <label>Preço (R$):</label>
+    <span class="preco form-control">{{produto.preco}}<span>
+</p>
+
+<p>
+    <label >Imagem:</label><br>
+    <span class="form-control"> 
+       <img  src="{{produto.img_base64}} " width="200" height="200">
+     </span>
+ </p>
+ 
+
+<button onclick="location.href= '{% url 'pedido' %}'" class= "btn btn-secondary btn-sm">Cancelar</button>
+<a href="{% url 'remover_pedido' pedido.id %}" class="btn btn-danger btn-sm" onclick="return confirm('Tem certeza que deseja remover este registro?');">Remover</a>
+
+{% endblock %}
+

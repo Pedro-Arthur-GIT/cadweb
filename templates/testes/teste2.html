@@ -9,8 +9,7 @@
 
 <p>
     <nome for="estado">Digite um estado: </nome>
-    <input type="text" data-hidden="#idestado" class="autocomplete">
-    <input type="hidden" id="idestado">
+    <input type="text" data-hidden="idestado" class="autocomplete">
 </p>
 
 
@@ -38,11 +37,11 @@
                 // Quando o item é selecionado
                 $(this).val(ui.item.label);// Define o texto no campo
                 var campo_hidden = $(this).data('hidden');//pega o campo hidden associado ao input
-                $(campo_hidden).val(ui.item,.id);// Define o ID no campo oculto
+                $(campo_hidden).val(ui.item.id);// Define o ID no campo oculto
                 return false;// Evita que o valor padrão do autocomplete seja inserido
             }             
         });
-    } 
+    }); 
 </script>
 
 

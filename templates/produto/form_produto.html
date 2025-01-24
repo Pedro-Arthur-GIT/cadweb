@@ -5,60 +5,55 @@
 
 
 {% block conteudo %} 
-<form method="post">
-    {% csrf_token %}    
-    {{ form.as_p }}
+    <form method="post">
+        {% csrf_token %}    
+        {{ form.as_p }}
 
 
-    <p>
-        <label for="id_categoria_nome">Categoria:</label>
-        <!-- autocomplete -->
-        <input type="text" value="{{form.instance.categoria}}" 
-            class="form-control autocomplete" 
-            id="id_categoria_nome" 
-            data-url="{% url 'buscar_dados' 'home.Categoria' %}" 
-            data-hidden="#id_categoria" >
+        <p>
+            <label for="id_categoria_nome">Categoria:</label>
+            <!-- autocomplete -->
+            <input type="text" value="{{form.instance.categoria}}" 
+                class="form-control autocomplete" 
+                id="id_categoria_nome" 
+                data-url="{% url 'buscar_dados' 'home.Categoria' %}" 
+                data-hidden="#id_categoria" >
+        </p>
+        
+
+
+        <fieldset class="fieldset">
+            <label for="imagem">Imagem:</label>
+            <input type="hidden" 
+                id="img_base64"  
+                class="img_init" 
+                data-canvas="imageCanvas" 
+                value="{{form.instance.img_base64}}" 
+                name="img_base64">
+
+
+            <input type="file" id="imagem" 
+                name="imagem" 
+                data-hidden="img_base64" 
+                class="img_upload form-control" 
+                accept="image/*"><br>
+
+
+            <canvas class="canvas"  id="imageCanvas" width="200" height="200"></canvas><br>
+
+
+        </fieldset>
+
+
+        <p>
+        
     </p>
-    
 
-
-    <fieldset class="fieldset">
-        <label for="imagem">Imagem:</label>
-        <input type="hidden" 
-            id="img_base64"  
-            class="img_init" 
-            data-canvas="imageCanvas" 
-            value="{{form.instance.img_base64}}" 
-            name="img_base64">
-
-
-        <input type="file" id="imagem" 
-            name="imagem" 
-            data-hidden="img_base64" 
-            class="img_upload form-control" 
-            accept="image/*"><br>
-
-
-        <canvas class="canvas"  id="imageCanvas" width="200" height="200"></canvas><br>
-
-
-    </fieldset>
-
-
-    <p>
-    
-</p>
-
-
+    <button onClick="location.href = '{% url 'produto' %}'" type="button" class= "btn btn-secondary btn-sm">Cancelar</button>
     <button class="btn btn-primary btn-sm" type="submit">Salvar</button>
-
-
-
-
-    
-
-
 </form>
+
+
 
 
 {% endblock conteudo %}
