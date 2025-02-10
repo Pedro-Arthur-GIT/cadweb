@@ -51,7 +51,7 @@
             <td>{{ item.preco }}</td>
             <td>?</td>
             <td>
-              <a href="#" class="btn btn-warning btn-sm">Editar</a>
+              <a onclick="location.href= '{% url 'editar_item_pedido' item.id %}'" class="btn btn-warning btn-sm">Editar</a>
               <a href="#" class="btn btn-danger btn-sm" 
               onclick="return confirm('Tem certeza que deseja remover este item?');">Remover</a>
             </td>         

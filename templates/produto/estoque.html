@@ -8,7 +8,7 @@
 <p>
     <label for="id_produto">Produto:</label>
     <span class="form-control" >{{form.instance.produto.nome}}</span>
-    </p>
+</p>
 <form method="post">
     {% csrf_token %}    
     {{ form.as_p }}
