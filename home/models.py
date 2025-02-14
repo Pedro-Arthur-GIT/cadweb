@@ -103,3 +103,9 @@ class ItemPedido(models.Model):
 
     def __str__(self):
         return f"{self.produto.nome} (Qtd: {self.qtde}) - Preço Unitário: {self.preco}"    
+
+    @property
+    def subtotal(self):
+        """Calcula o subtotal do item (quantidade * preço unitário)"""
+        return self.qtde * self.preco
+    

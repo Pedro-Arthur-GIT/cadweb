@@ -36,6 +36,8 @@
 <table class="table table-striped">
     <thead>
         <tr>
+            <th>ID</td>
+            <th>Imagem</th>
             <th>Produto</th>
             <th>Quantidade</th>
             <th>Preço Unitário (R$)</th>
@@ -46,19 +48,25 @@
     <tbody>
         {% for item in pedido.itempedido_set.all %}
         <tr>
+            <td>{{ item.produto.id }}</td>
+            <td><img  src="{{produto.img_base64}} " width="50px" height="50px"></td>
             <td>{{ item.produto.nome }}</td>
             <td>{{ item.qtde }}</td>
             <td>{{ item.preco }}</td>
-            <td>?</td>
+            <td>{{ item.subtotal }}</td>
             <td>
               <a onclick="location.href= '{% url 'editar_item_pedido' item.id %}'" class="btn btn-warning btn-sm">Editar</a>
-              <a href="#" class="btn btn-danger btn-sm" 
+              <a onclick="location.href= '{% url 'remover_item_pedido' item.id %}'" class="btn btn-danger btn-sm" 
               onclick="return confirm('Tem certeza que deseja remover este item?');">Remover</a>
             </td>         
         </tr>
         {% endfor %}
     </tbody>
 </table>
+<p>
+  <span><strong>Total do pedido: R${{ pedido.total }}</strong></span>
+</p>
+  
 
 {% endblock conteudo %}
 
