@@ -360,6 +360,7 @@ def editar_item_pedido(request, id):
                 # Atualizando o estoque com a nova quantidade
                 produto.estoque.qtde -= nova_quantidade
                 produto.estoque.save()
+                    
 
                 item_pedido.save()  # Salva o item atualizado
                 messages.success(request, 'Operação realizada com sucesso')
