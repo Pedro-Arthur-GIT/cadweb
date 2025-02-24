@@ -1,4 +1,5 @@
 import locale
+from django import forms
 from django.db import models
 
 
@@ -85,13 +86,27 @@ class Pedido(models.Model):
         """Calcula o total de todos os itens no pedido, formatado como moeda local"""
         total = sum(item.qtde * item.preco for item in self.itempedido_set.all())
         return total
-
-
     
     @property
     def qtdeItens(self):
         """Conta a qtde de itens no pedido, """
         return self.itempedido_set.count()  
+    
+       # lista de todos os pagamentos realiados
+    @property
+    def pagamentos(self):
+        return Pagamento.objects.filter(pedido=self)    
+    
+    #Calcula o total de todos os pagamentos do pedido
+    @property
+    def total_pago(self):
+        total_pago = sum(pagamento.valor for pagamento in self.pagamentos.all())
+        return total_pago    
+    
+    @property
+    def debito(self):
+        debito = self.total - self.total_pago
+        return debito
 
     
 class ItemPedido(models.Model):
@@ -109,3 +124,55 @@ class ItemPedido(models.Model):
         """Calcula o subtotal do item (quantidade * preço unitário)"""
         return self.qtde * self.preco
     
+class Pagamento(models.Model):
+    DINHEIRO = 1
+    CARTAO = 2
+    PIX = 3
+    OUTRA = 4
+
+
+    FORMA_CHOICES = [
+        (DINHEIRO, 'Dinheiro'),
+        (CARTAO, 'Cartão'),
+        (PIX, 'Pix'),
+        (OUTRA, 'Outra'),
+    ]
+
+
+    pedido = models.ForeignKey(Pedido, on_delete=models.CASCADE)
+    forma = models.IntegerField(choices=FORMA_CHOICES)
+    valor = models.DecimalField(max_digits=10, decimal_places=2,blank=False)
+    data_pgto = models.DateTimeField(auto_now_add=True)
+    
+    @property
+    def data_pgtof(self):
+        """Retorna a data no formato DD/MM/AAAA HH:MM"""
+        if self.data_pgto:
+            return self.data_pgto.strftime('%d/%m/%Y %H:%M')
+        return None
+
+class PagamentoForm(forms.ModelForm):
+    class Meta:
+        model = Pagamento
+        fields = ['pedido','forma','valor']
+        widgets = {
+            'pedido': forms.HiddenInput(),  # Campo oculto para armazenar o ID
+            # Usando Select para renderizar as opções
+            'forma': forms.Select(attrs={'class': 'form-control'}),  
+            'valor':forms.TextInput(attrs={
+                'class': 'money form-control',
+                'maxlength': 500,
+                'placeholder': '0.000,00'
+            }),
+         }
+        
+    def __init__(self, *args, **kwargs):
+            super(PagamentoForm, self).__init__(*args, **kwargs)
+            self.fields['valor'].localize = True
+            self.fields['valor'].widget.is_localized = True  
+
+    def clean_valor(self):
+        valor = self.cleaned_data.get('valor')
+        if valor <= 0:
+            raise forms.ValidationError("O valor deve ser maior que zero.")
+        return valor

@@ -346,20 +346,17 @@ def editar_item_pedido(request, id):
         form = ItemPedidoForm(request.POST, instance=item_pedido)
         if form.is_valid():
             item_pedido = form.save(commit=False)  # Não salva ainda, para modificações
-            print(item_pedido.produto.id)
             produto = item_pedido.produto
             nova_quantidade = item_pedido.qtde
 
-            # Logando informações antes de modificar o estoque
-            print(f"Antes da devolução: Estoque atual de {produto.nome}: {produto.estoque.qtde}, Quantidade anterior: {quantidade_anterior}")
+  
 
             # Devolvendo a quantidade anterior ao estoque
             estoque = item_pedido.produto.estoque  # Obtém o estoque do produto
             estoque.qtde += quantidade_anterior  # Devolve a quantidade do item ao estoque
             estoque.save() 
 
-            # Log após devolução
-            print(f"Após devolução: Estoque de {produto.nome}: {produto.estoque.qtde}")
+
 
             # Verificando se o estoque é suficiente
             if nova_quantidade > produto.estoque.qtde:
@@ -367,10 +364,10 @@ def editar_item_pedido(request, id):
                 messages.error(request, 'Quantidade em estoque insuficiente para o produto.')
             else:
                 # Atualizando o estoque com a nova quantidade
-                print(f"Antes do decremento: Estoque de {produto.nome}: {produto.estoque.qtde}")
+
                 estoque.qtde -= nova_quantidade
                 estoque.save()
-                print(f"Após decremento: Estoque de {produto.nome}: {produto.estoque.qtde}")
+  
 
                 item_pedido.save()  # Salva o item atualizado
                 messages.success(request, 'Operação realizada com sucesso')
@@ -407,3 +404,58 @@ def remover_item_pedido(request, id):
 
     # Redireciona de volta para a página de detalhes do pedido
     return redirect('detalhes_pedido', id=pedido_id)
+
+@login_required
+def form_pagamento(request,id):
+    try:
+        pedido = Pedido.objects.get(pk=id)
+    except Pedido.DoesNotExist:
+        # Caso o registro não seja encontrado, exibe a mensagem de erro
+        messages.error(request, 'Registro não encontrado')
+        return redirect('pedido')  # Redireciona para a listagem    
+    
+    if request.method == 'POST':
+        form = PagamentoForm(request.POST)
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'Operação realizada com Sucesso')
+    # prepara o formulário para um novo pagamento
+    pagamento = Pagamento(pedido=pedido)
+    form = PagamentoForm(instance=pagamento)
+    contexto = {
+        'pedido': pedido,
+        'form': form,
+    }    
+    return render(request, 'pedido/pagamento.html',contexto)
+
+@login_required
+def remover_pagamento(request, id):
+    try:
+        pagamento = Pagamento.objects.get(pk=id) 
+        pagamento.delete()
+        messages.success(request, "Operação realizada com sucesso")
+        return redirect('form_pagamento', id=id)
+    except Pagamento.DoesNotExist:
+        messages.error(request, 'Registro não encontrado')
+    return redirect('form_pagamento', id=id)
+
+@login_required
+def editar_pagamento(request, id):
+    try:
+        pagamento = Pagamento.objects.get(pk=id)
+    except Pagamento.DoesNotExist:
+        # Caso o registro não seja encontrado, exibe a mensagem de erro
+        messages.error(request, 'Registro não encontrado')
+        return redirect('form_pagamento', id=id)  # Redireciona para a listagem
+
+    if request.method == 'POST':
+        # combina os dados do formulário submetido com a instância do objeto existente, permitindo editar seus valores.
+        form = PagamentoForm(request.POST, instance=pagamento)
+        if form.is_valid():
+            pagamento = form.save()  # save retorna o objeto salvo
+            messages.success(request, "Operação realizada com sucesso")
+            return redirect('form_pagamento', id=id)  # redireciona para a listagem
+
+    else:
+        form = Pagamento(instance=pagamento)
+    return render(request, 'produto/form_pagamento', 'form': form, {id=id}) 
