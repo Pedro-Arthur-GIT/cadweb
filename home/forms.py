@@ -58,8 +58,8 @@ class ProdutoForm(forms.ModelForm):
         model = Produto
         fields = ['nome', 'preco', 'categoria','img_base64']
         widgets = {
-            #'categoria': forms.Select(attrs={'class': 'form-control'}),
-            'categoria': forms.HiddenInput(), #Campo oculto para arazenar apenas o ID
+            'categoria': forms.Select(attrs={'class': 'form-control'}),
+            #'categoria': forms.HiddenInput(), #Campo oculto para arazenar apenas o ID
             'nome':forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Nome'}),
             'img_base64': forms.HiddenInput(), 
             # a classe money mascara a entreda de valores monetários, está em base.html
@@ -111,3 +111,41 @@ class ItemPedidoForm(forms.ModelForm):
             'produto': forms.HiddenInput(),  # Campo oculto para armazenar o ID
             'qtde':forms.TextInput(attrs={'class': 'form-control',}),
         }
+
+class PagamentoForm(forms.ModelForm):
+    class Meta:
+        model = Pagamento
+        fields = ['pedido','forma','valor']
+        widgets = {
+            'pedido': forms.HiddenInput(),  # Campo oculto para armazenar o ID
+            # Usando Select para renderizar as opções
+            'forma': forms.Select(attrs={'class': 'form-control'}),  
+            'valor':forms.TextInput(attrs={
+                'class': 'money form-control',
+                'maxlength': 500,
+                'placeholder': '0.000,00'
+            }),
+         }
+        
+    def __init__(self, *args, **kwargs):
+            super(PagamentoForm, self).__init__(*args, **kwargs)
+            self.fields['valor'].localize = True
+            self.fields['valor'].widget.is_localized = True  
+
+    def clean_valor(self):
+        valor = self.cleaned_data.get('valor')
+        pedido = self.cleaned_data.get('pedido')
+        
+        print(f"Valor: {valor}, Débito do Pedido: {pedido.debito}")  # Depuração
+        
+        if valor <= 0:
+            print("Erro")  # Depuração
+            raise forms.ValidationError("O valor deve ser maior que zero.")
+        elif valor > pedido.debito:
+            print("Erro")
+            raise forms.ValidationError("O valor do pagamento não pode ser superior ao valor do pedido.")
+        else:
+            print("Válido   ")
+        return valor
+    
+  

@@ -1,6 +1,7 @@
 import locale
 from django import forms
 from django.db import models
+from decimal import Decimal
 
 
 class Categoria(models.Model):
@@ -108,6 +109,32 @@ class Pedido(models.Model):
         debito = self.total - self.total_pago
         return debito
 
+    def format_decimal(self, value):
+        return value.quantize(Decimal("0.01"))  # Apenas formata, sem arredondar
+
+    @property
+    def icms(self):
+        return self.format_decimal(self.total * Decimal("0.18"))
+
+    @property
+    def ipi(self):
+        return self.format_decimal(self.total * Decimal("0.05"))
+
+    @property
+    def pis(self):
+        return self.format_decimal(self.total * Decimal("0.0165"))
+
+    @property
+    def cofins(self):
+        return self.format_decimal(self.total * Decimal("0.076"))
+
+    @property
+    def impostos(self):
+        return self.format_decimal(self.icms + self.ipi + self.pis + self.cofins)
+    
+    @property
+    def valor_final(self):
+        return self.format_decimal(self.total + self.impostos)
     
 class ItemPedido(models.Model):
     pedido = models.ForeignKey(Pedido, on_delete=models.CASCADE)
@@ -151,28 +178,3 @@ class Pagamento(models.Model):
             return self.data_pgto.strftime('%d/%m/%Y %H:%M')
         return None
 
-class PagamentoForm(forms.ModelForm):
-    class Meta:
-        model = Pagamento
-        fields = ['pedido','forma','valor']
-        widgets = {
-            'pedido': forms.HiddenInput(),  # Campo oculto para armazenar o ID
-            # Usando Select para renderizar as opções
-            'forma': forms.Select(attrs={'class': 'form-control'}),  
-            'valor':forms.TextInput(attrs={
-                'class': 'money form-control',
-                'maxlength': 500,
-                'placeholder': '0.000,00'
-            }),
-         }
-        
-    def __init__(self, *args, **kwargs):
-            super(PagamentoForm, self).__init__(*args, **kwargs)
-            self.fields['valor'].localize = True
-            self.fields['valor'].widget.is_localized = True  
-
-    def clean_valor(self):
-        valor = self.cleaned_data.get('valor')
-        if valor <= 0:
-            raise forms.ValidationError("O valor deve ser maior que zero.")
-        return valor

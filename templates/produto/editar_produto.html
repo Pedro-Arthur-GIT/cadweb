@@ -19,6 +19,17 @@
         <input type="text" name="preco" class="preco form-control" placeholder="{{produto.preco}}" required id="id_preco">
     </p>
 
+    {% comment %} <p>
+        <label for="id_categoria_nome">Categoria:</label>
+        <!-- autocomplete -->
+        <input type="text" class="form-control autocomplete" 
+            id="id_categoria_nome" 
+            data-url="{% url 'buscar_dados' 'home.Categoria' %}" 
+            data-hidden="#id_categoria" >
+        <input type="hidden" id="id_categoria">
+    </p> {% endcomment %}
+    
+
     <p>
         <label for="id_categoria_nome">Categoria:</label>
         <!-- autocomplete -->
@@ -28,12 +39,6 @@
             data-hidden="#id_categoria" >
         <input type="hidden" id="id_categoria">
     </p>
-    
-
-    {% comment %} <p>
-        <label for="id_categoria">Categoria:</label>
-        <input type="text" name="categoria" class="categoria form-control" placeholder="{{categoria.preco}}" required id="id_categoria">
-    </p> {% endcomment %}
 
     <fieldset class="fieldset">
         <label for="imagem">Imagem:</label>

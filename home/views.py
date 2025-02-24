@@ -173,7 +173,7 @@ def form_produto(request):
 def editar_produto(request, id):
     try:
         produto = Produto.objects.get(pk=id)
-    except Cliente.DoesNotExist:
+    except Produto.DoesNotExist:
         # Caso o registro não seja encontrado, exibe a mensagem de erro
         messages.error(request, 'Registro não encontrado')
         return redirect('produto')  # Redireciona para a listagem
@@ -419,6 +419,8 @@ def form_pagamento(request,id):
         if form.is_valid():
             form.save()
             messages.success(request, 'Operação realizada com Sucesso')
+        else:
+            messages.error(request, 'Corrija os erros do formulário.')
     # prepara o formulário para um novo pagamento
     pagamento = Pagamento(pedido=pedido)
     form = PagamentoForm(instance=pagamento)
@@ -432,21 +434,23 @@ def form_pagamento(request,id):
 def remover_pagamento(request, id):
     try:
         pagamento = Pagamento.objects.get(pk=id) 
+        pedido = pagamento.pedido
         pagamento.delete()
         messages.success(request, "Operação realizada com sucesso")
-        return redirect('form_pagamento', id=id)
+        return redirect('form_pagamento', id=pedido.id)
     except Pagamento.DoesNotExist:
         messages.error(request, 'Registro não encontrado')
-    return redirect('form_pagamento', id=id)
+    return redirect('form_pagamento', id=pedido.id)
 
 @login_required
 def editar_pagamento(request, id):
     try:
         pagamento = Pagamento.objects.get(pk=id)
+        pedido = pagamento.pedido
     except Pagamento.DoesNotExist:
         # Caso o registro não seja encontrado, exibe a mensagem de erro
         messages.error(request, 'Registro não encontrado')
-        return redirect('form_pagamento', id=id)  # Redireciona para a listagem
+        return redirect('form_pagamento', id=pedido.id)  # Redireciona para a listagem
 
     if request.method == 'POST':
         # combina os dados do formulário submetido com a instância do objeto existente, permitindo editar seus valores.
@@ -454,8 +458,17 @@ def editar_pagamento(request, id):
         if form.is_valid():
             pagamento = form.save()  # save retorna o objeto salvo
             messages.success(request, "Operação realizada com sucesso")
-            return redirect('form_pagamento', id=id)  # redireciona para a listagem
+            return redirect('form_pagamento', id=pedido.id)  # redireciona para a listagem
 
     else:
-        form = Pagamento(instance=pagamento)
-    return render(request, 'produto/form_pagamento', 'form': form, {id=id}) 
+        form = PagamentoForm(instance=pagamento)
+    return render(request, 'pedido/pagamento.html', {'form': form, 'pedido': pedido, 'id':id})
+
+@login_required
+def nota_fiscal(request, id):
+    try:
+        pedido = Pedido.objects.get(pk=id)
+    except Pedido.DoesNotExist:
+        messages.error(request, 'Registro não encontrado')
+        return redirect('pedido', id=id)
+    return render(request, 'pedido/nota_fiscal.html', {'pedido': pedido})

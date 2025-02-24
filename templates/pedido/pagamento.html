@@ -23,8 +23,9 @@
 <form method="post">
     {% csrf_token %}    
     {{ form.as_p }}
-    <button class="btn btn-primary btn-sm" type="submit">Salvar</button>
     <button type="button" onclick="location='{% url 'detalhes_pedido' form.instance.pedido.id %}'" class="btn btn-secondary btn-sm">Voltar</button>
+    <button type="button" onclick="location='{% url 'form_pagamento' form.instance.pedido.id %}'" class="btn btn-primary btn-sm">Recarregar</button>
+    <button class="btn btn-primary btn-sm" type="submit">Salvar</button>
 
 
 </form>
@@ -64,10 +65,10 @@
 </table>
 
 <p>
-    <span><strong>Total do pedido: R${{ pedido.total }}</strong></span><br>
-    <span><strong>Total pago: R${{ pedido.total_pago }}</strong></span><br>
+    <span><strong>Total do pedido: R${{ pedido.total }}</strong></span><br><br>
+    <span><strong>Total pago: R${{ pedido.total_pago }}</strong></span><br><br>
     <span><strong>Débito: R${{ pedido.debito }}</strong></span>
-  </p>
+</p>
 
 <hr>
 {% endblock conteudo %}
