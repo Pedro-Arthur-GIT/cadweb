@@ -10,7 +10,7 @@
 {% block conteudo %}
 <div class="barrabotoes">
     <button onClick="location='{% url 'pedido' %}'" type="button" class="btn btn-primary btn-sm">Recarregar</button>
-    <button onClick="location='{% url 'pdf' pedido.id %}'" type="button" class="btn btn-secondary btn-sm">Baixar Nota Fiscal em PDF</button>
+    <button id="exportButton" type="button" class="btn btn-secondary btn-sm">Baixar Nota Fiscal em PDF</button>
 </div>
 
 
@@ -144,5 +144,27 @@
 </div>
 
 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 
+<script>
+    function exportToPDF() {
+        // Seleciona o conteúdo que será exportado para PDF
+        const element = document.querySelector('.container');
+
+        // Configurações do PDF
+        const options = {
+            margin:       10,
+            filename:     'nota_fiscal.pdf',
+            image:        { type: 'jpeg', quality: 0.98 },
+            html2canvas:  { scale: 2 },
+            jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' }
+        };
+
+        // Gera o PDF
+        html2pdf().from(element).set(options).save();
+    }
+
+    // Adiciona o evento ao botão de exportar PDF
+    document.getElementById('exportButton').addEventListener('click', exportToPDF);
+</script>
 {% endblock conteudo %}
