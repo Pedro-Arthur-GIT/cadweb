@@ -1,134 +1,148 @@
 {% extends "base.html" %}
 
+{% load static %}
+{% block extra_css %}
+    <link rel="stylesheet" href="{% static 'css/nota_styles.css' %}">
+{% endblock extra_css %}
 
 {% block titulo_conteudo %} Nota Fiscal {% endblock titulo_conteudo %}
 
-
-{% block conteudo %} 
-
-
+{% block conteudo %}
 <div class="barrabotoes">
     <button onClick="location='{% url 'pedido' %}'" type="button" class="btn btn-primary btn-sm">Recarregar</button>
+    <button onClick="location='{% url 'pdf' pedido.id %}'" type="button" class="btn btn-secondary btn-sm">Baixar Nota Fiscal em PDF</button>
 </div>
 
 
-<table>
-    <tbody>
-            <p>
-                <span>ICMS..........R$ {{ pedido.icms }}</span><br>
-                <span>PIS...........R$ {{ pedido.pis}}</span><br>
-                <span>IPI...........R$ {{ pedido.ipi}}</span><br>
-                <span>COFINS........R$ {{ pedido.cofins }}</span><br>
-                <span>Impostos......R$ {{ pedido.impostos}}</span><br>
-                <span>Total.........R$ {{ pedido.total }}</span><br>
-                <span>Valor Final...R$ {{ pedido.valor_final }}</span><br>
-            </p>
-    </tbody>
-  </table>
 
 
-      <style>
-          .container {
-              width: 100%;
-              max-width: 800px;
-              margin: 0 auto;
-              font-family: Arial, sans-serif;
-          }
-          .row {
-              display: flex;
-              border-bottom: 1px solid #ccc;
-              padding: 8px 0;
-          }
-          .row.header {
-              font-weight: bold;
-              background-color: #f2f2f2;
-          }
-          .cell {
-              flex: 1;
-              padding: 8px;
-              text-align: left;
-          }
-          .cell.codigo { flex: 0.5; }
-          .cell.descricao { flex: 3; }
-          .cell.qtd { flex: 0.5; }
-          .cell.valor-unitario { flex: 1; }
-          .cell.total { flex: 1; }
-          .info {
-              margin-top: 20px;
-          }
-          .info p {
-              margin: 5px 0;
-          }
-      </style>
-  </head>
-  <body>
-      <div class="container">
-          <h1>DANFE - Documento Auxiliar da Nota Fiscal Eletrônica</h1>
-          <p><strong>CHAVE DE ACESSO:</strong> 2024100000000024825047947311015013181358343</p>
-          <p><strong>Destinatário:</strong> JOSÉ</p>
-          <p><strong>Data Nascimento:</strong> 15/02/1999</p>
-          <p><strong>CPF/CNPJ:</strong> 855.477.885-55</p>
-  
-          <!-- Cabeçalho da Tabela -->
-          <div class="row header">
-              <div class="cell codigo">Código</div>
-              <div class="cell descricao">Descrição</div>
-              <div class="cell qtd">Qtd</div>
-              <div class="cell valor-unitario">Valor Unitário</div>
-              <div class="cell total">Total</div>
-          </div>
-  
-          <!-- Linhas da Tabela -->
-          <div class="row">
-              <div class="cell codigo">6</div>
-              <div class="cell descricao">Tablet Samsung A9</div>
-              <div class="cell qtd">10</div>
-              <div class="cell valor-unitario">R$ 16.000,00</div>
-              <div class="cell total">R$ 150.000,00</div>
-          </div>
-          <div class="row">
-              <div class="cell codigo">3</div>
-              <div class="cell descricao">Notebook Samsung 15</div>
-              <div class="cell qtd">10</div>
-              <div class="cell valor-unitario">R$ 3.600,00</div>
-              <div class="cell total">R$ 35.000,00</div>
-          </div>
-          <div class="row">
-              <div class="cell codigo">11</div>
-              <div class="cell descricao">Impressora Multifuncional HP Smart Tank S84 T</div>
-              <div class="cell qtd">11</div>
-              <div class="cell valor-unitario">R$ 12.346,70</div>
-              <div class="cell total">R$ 135.802,70</div>
-          </div>
-          <div class="row">
-              <div class="cell codigo">9</div>
-              <div class="cell descricao">Teclado gamer Brivax QWERTY</div>
-              <div class="cell qtd">9</div>
-              <div class="cell valor-unitario">R$ 1.600,00</div>
-              <div class="cell total">R$ 13.800,00</div>
-          </div>
-          <div class="row">
-              <div class="cell codigo">10</div>
-              <div class="cell descricao">Câmera web C3Tech</div>
-              <div class="cell qtd">10</div>
-              <div class="cell valor-unitario">R$ 10,00</div>
-              <div class="cell total">R$ 100,00</div>
-          </div>
-  
-          <!-- Informações Adicionais -->
-          <div class="info">
-              <p><strong>ICMS:</strong> R$ 68.192,49</p>
-              <p><strong>PIS:</strong> R$ 5.517,64</p>
-              <p><strong>IPI:</strong> R$ 13.376,11</p>
-              <p><strong>COFINS:</strong> R$ 25.414,61</p>
-              <p><strong>Total:</strong> R$ 334.402,79</p>
-              <p><strong>Impostos:</strong> R$ 184.590,85</p>
-              <p><strong>Valor Final:</strong> R$ 438.903,55</p>
-          </div>
-  
-          <p>Recebemos os produtos constantes nesta nota fiscal.</p>
-      </div>
-  </body>
-  </html>
+<style>
+    .container {
+        width: 100%;
+        max-width: 800px;
+        margin: 0 auto;
+        font-family: Arial, sans-serif;
+        border: 1px solid black;
+    }
+    .row_item {
+        display: flex;
+        border: 1px solid black;
+        padding: 8px 0;
+        margin-left: 5px;
+        margin-right: 5px;
+    }
+    .row.header {
+        font-weight: bold;
+        background-color: #f2f2f2;
+        padding: 5px;
+        margin: 5px;
+        border: 1px solid black;
+        margin-bottom: 0px;
+    }
+    .cell {
+        flex: 1;
+        margin: 5px;
+        padding: 8px;
+        text-align: left;
+    }
+    .cell.codigo { flex: 0.5; }
+    .cell.descricao { flex: 2.5; }
+    .cell.qtd { flex: 0.5; }
+    .cell.valor-unitario { flex: 1.5; }
+    .cell.total { flex: 1.5; }
+    .info {
+        margin-top: 20px;
+    }
+    .info p {
+        margin: 5px 0;
+    }
+    .border_div {
+        border: 1px solid black;
+        padding: 5px;
+        margin: 5px;
+    }
+    .impostos {
+        display: flex;
+        border: 1px solid black;
+        padding: 5px;
+        margin: 5px;
+        align-items: space-around;
+    }
+    .center {
+        text-align: center;
+        font-size: 18px;
+        font-weight: bold;
+    }
+    .start_div {
+        display: flex;
+        justify-content: space-between;
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    .end_div {
+        display: flex;
+        flex-direction: column;
+        align-content: flex-end;
+    }
+</style>
+
+<div class="container">
+    <h1 class="center"><br>DANFE - Documento Auxiliar da Nota Fiscal Eletrônica</h1>
+
+    <div class="border_div">
+        <p><strong>CHAVE DE ACESSO:</strong> {{ pedido.chave_acesso }}</p>
+    </div>
+
+    <div class="border_div">
+        <strong>Destinatário:</strong> {{ pedido.cliente }}<br>
+        <strong>Data Nascimento:</strong> {{ pedido.cliente.datanascimento }}<br>
+        <strong>CPF/CNPJ:</strong> {{ pedido.cliente.cpf_formatado }}<br>
+    </div>
+
+    <div class="border_div">
+        <!-- Cabeçalho da Tabela -->
+        <div class="row header">
+            <div class="cell codigo">Código</div>
+            <div class="cell descricao">Descrição</div>
+            <div class="cell qtd">Qtd</div>
+            <div class="cell valor-unitario">Valor Unitário</div>
+            <div class="cell total">Total</div>
+        </div>
+
+        <!-- Laço para gerar os itens do pedido -->
+        {% for item in pedido.itempedido_set.all %}
+        <div class="row_item">
+            <div class="cell codigo">{{ item.produto.id }}</div>
+            <div class="cell descricao">{{ item.produto.nome }}</div>
+            <div class="cell qtd">{{ item.qtde }}</div>
+            <div class="cell valor-unitario">R$ {{ item.preco }}</div>
+            <div class="cell total">R$ {{ item.subtotal }}</div>
+        </div>
+        {% endfor %}
+    </div>
+
+    <!-- Informações Adicionais -->
+    <div class="impostos">
+        <div class="start_div">
+            <p><strong>ICMS..........:</strong> R$ {{pedido.icms}}</p>
+            <p><strong>PIS..........:</strong> R$ {{pedido.pis}}</p>
+        </div>
+
+        <div class="end_div">
+            <p><strong>IPI..........:</strong> R$ {{pedido.ipi}}</p>
+            <p><strong>COFINS..........:</strong> R$ {{pedido.cofins}}</p>
+        </div>
+    </div>
+
+    <div class="border_div">
+        <span><strong>Total.......:</strong> R$ {{pedido.total}}</span><br>
+        <span><strong>Impostos..:</strong> R$ {{pedido.impostos}}</span><br>
+        <span><strong>Valor Final:</strong> R$ {{pedido.valor_final}}</span><br>
+    </div>
+
+    <p class="center">Recebemos os produtos constantes nesta nota fiscal.</p>
+</div>
+
+
 
 {% endblock conteudo %}

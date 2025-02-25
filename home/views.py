@@ -1,10 +1,15 @@
-from django.shortcuts import redirect, render
+from django.shortcuts import redirect, render, get_object_or_404
 from django.contrib import messages
 from .models import *
 from .forms import *
 from django.http import JsonResponse
 from django.apps import apps
 from django.contrib.auth.decorators import login_required
+from django.http import HttpResponse
+import pdfkit
+from django.template.loader import render_to_string
+
+
 
 
 
@@ -472,3 +477,24 @@ def nota_fiscal(request, id):
         messages.error(request, 'Registro não encontrado')
         return redirect('pedido', id=id)
     return render(request, 'pedido/nota_fiscal.html', {'pedido': pedido})
+
+def pdf(request, id):
+    pedido = get_object_or_404(Pedido, id=id)
+    html_string = render_to_string('pedido/nota_fiscal.html', {'pedido': pedido})
+
+    # Configuração do pdfkit
+    config = pdfkit.configuration(wkhtmltopdf=r'C:\Program Files\wkhtmltopdf\bin\wkhtmltopdf.exe')  # Ajuste o caminho conforme necessário
+
+    # Gerar PDF
+    pdf_file = pdfkit.from_string(html_string, False, configuration=config)
+
+    response = HttpResponse(pdf_file, content_type='application/pdf')
+    response['Content-Disposition'] = f'attachment; filename="pedido_{pedido.id}.pdf"'
+    return response
+
+
+
+
+
+
+

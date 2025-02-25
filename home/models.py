@@ -2,6 +2,7 @@ import locale
 from django import forms
 from django.db import models
 from decimal import Decimal
+import hashlib
 
 
 class Categoria(models.Model):
@@ -27,6 +28,12 @@ class Cliente(models.Model):
         if self.datanasc:
             return self.datanasc.strftime('%d/%m/%Y')
         return None
+    
+    @property
+    def cpf_formatado(self):
+        """Retorna o CPF formatado como XXX.XXX.XXX-XX"""
+        cpf_numerico = "".join(filter(str.isdigit, self.cpf))  # Remove não numéricos
+        return f"{cpf_numerico[:3]}.{cpf_numerico[3:6]}.{cpf_numerico[6:9]}-{cpf_numerico[9:]}" if len(cpf_numerico) == 11 else "CPF inválido"
 
 class Produto(models.Model):
     nome = models.CharField(max_length=100)
@@ -135,6 +142,23 @@ class Pedido(models.Model):
     @property
     def valor_final(self):
         return self.format_decimal(self.total + self.impostos)
+
+    @property
+    def chave_acesso(self):
+        """Gera uma chave de acesso numérica baseada no ID do pedido e na data da nota fiscal"""
+        if not self.data_pedido:
+            return "00000000000000000000000000000000000000000000"  # Caso não tenha data
+
+        # Concatena ID + data no formato YYYYMMDD
+        chave_base = f"{self.id}{self.data_pedido.strftime('%Y%m%d')}"
+        
+        # Gera um hash numérico
+        chave_hash = hashlib.sha256(chave_base.encode()).hexdigest()
+
+        # Converte letras em números (A=0, B=1, ..., F=5) e mantém apenas números
+        chave_numerica = ''.join(str(int(char, 16)) for char in chave_hash)[:44]  # Limita a 44 caracteres
+
+        return chave_numerica
     
 class ItemPedido(models.Model):
     pedido = models.ForeignKey(Pedido, on_delete=models.CASCADE)

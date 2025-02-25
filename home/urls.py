@@ -41,4 +41,5 @@ urlpatterns = [
     path('pedido/remover_pagamento/<int:id>/', views.remover_pagamento, name='remover_pagamento'),
 
     path('pedido/nota_fiscal/<int:id>/', views.nota_fiscal, name='nota_fiscal'),
+    path('pedido/pdf/<int:id>/', views.pdf, name='pdf'),
 ]
