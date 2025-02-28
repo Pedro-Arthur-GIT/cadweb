@@ -8,6 +8,7 @@
 
 <form method="post" >
     {% csrf_token %}
+    
     <input type="hidden">
     <p>
         <label for="id_nome">Nome:</label>
@@ -29,16 +30,7 @@
         <input type="hidden" id="id_categoria">
     </p> {% endcomment %}
     
-
-    <p>
-        <label for="id_categoria_nome">Categoria:</label>
-        <!-- autocomplete -->
-        <input type="text" class="form-control autocomplete" 
-            id="id_categoria_nome" 
-            data-url="{% url 'buscar_dados' 'home.Categoria' %}" 
-            data-hidden="#id_categoria" >
-        <input type="hidden" id="id_categoria">
-    </p>
+    {{form.categoria}}
 
     <fieldset class="fieldset">
         <label for="imagem">Imagem:</label>
@@ -54,6 +46,8 @@
             data-hidden="img_base64" 
             class="img_upload form-control" 
             accept="image/*"><br>
+
+   
 
         <canvas class="canvas" id="imageCanvas" width="200" height="200"></canvas><br>
 
