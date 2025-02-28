@@ -6,7 +6,6 @@ from django.http import JsonResponse
 from django.apps import apps
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse
-import pdfkit
 from django.template.loader import render_to_string
 
 
